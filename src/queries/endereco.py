@@ -13,24 +13,28 @@ class Endereco(BaseModel):
 
 
 def insertEndereco(endereco: Endereco):
+    conn = postgree()
     print(f'insert \'endereco\' {endereco}')
-    response = postgree.mutation(
+    response = conn.mutation(
         f'INSERT INTO ENDERECO (ENDERECO_ID, RUA, COMPLEMENTO, BAIRRO, CIDADE, ESTADO, CEP) values ({endereco.endereco_id}, \'{endereco.rua}\', \'{endereco.complemento}\', \'{endereco.bairro}\', \'{endereco.cidade}\', \'{endereco.estado}\', \'{endereco.cep}\');')
 
 
 def listEnderecos():
+    conn = postgree()
+    enderecos = conn.query("""SELECT * FROM ENDERECO;""")
     print(f'list all \'endereco\'')
-    enderecos = postgree.query("SELECT * FROM ENDERECO;")
     return enderecos
 
 
 def updateEndereco(endereco: Endereco):
+    conn = postgree()
     print(f'update \'endereco\' {endereco} ')
-    return postgree.mutation(
-        f'UPDATE ENDERECO SET RUA = {endereco.rua}, COMPLEMENTO = {endereco.complemento}, BAIRRO = {endereco.bairro}, CIDADE = {endereco.cidade}, ESTADO = {endereco.estado}, CEP = {endereco.cep} WHERE ENDERECO_ID = {endereco.endereco_id};')
+    return conn.mutation(
+        f'UPDATE ENDERECO SET RUA = \'{endereco.rua}\', COMPLEMENTO = \'{endereco.complemento}\', BAIRRO = \'{endereco.bairro}\', CIDADE = \'{endereco.cidade}\', ESTADO = \'{endereco.estado}\', CEP = \'{endereco.cep}\' WHERE ENDERECO_ID = \'{endereco.endereco_id}\';')
 
 
 def deleteEndereco(endereco_id: int):
+    conn = postgree()
     print(f'delete \'endereco\' from id {endereco_id}')
-    response = postgree.mutation(f'DELETE FROM ENDERECO e WHERE e.ENDERECO_ID = {endereco_id};')
+    response = conn.mutation('DELETE FROM ENDERECO e WHERE e.ENDERECO_ID = endereco_id;')
     return response

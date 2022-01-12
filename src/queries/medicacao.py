@@ -11,24 +11,28 @@ class Medicacao(BaseModel):
 
 
 def insertMedicacao(medicacao: Medicacao):
+    conn = postgree()
     print(f'insert \'medicacao\' {medicacao}')
-    response = postgree.mutation(
+    response = conn.mutation(
         f'INSERT INTO MEDICACAO (MED_ID, REGISTRO_FEDERAL, NOME, FABRICANTE, CIRCUNSTANCIA) values ({medicacao.med_id}, \'{medicacao.registro_federal}\', \'{medicacao.nome}\', \'{medicacao.fabricante}\', \'{medicacao.circunstancia}\');')
 
 
 def listMedicacoes():
+    conn = postgree()
+    medicacoes = conn.query("""SELECT * FROM MEDICACAO;""")
     print(f'list all \'medicacao\'')
-    medicacoes = postgree.query("SELECT * FROM MEDICACAO;")
     return medicacoes
 
 
 def updateMedicacao(medicacao: Medicacao):
+    conn = postgree()
     print(f'update \'medicacao\' {medicacao}')
-    return postgree.mutation(
-        f'UPDATE MEDICACAO SET REGISTRO_FEDERAL = {medicacao.registro_federal}, NOME = {medicacao.nome}, FABRICANTE = {medicacao.fabricante}, CIRCUNSTANCIA = {medicacao.circunstancia} WHERE MED_ID = {medicacao.med_id};')
+    return conn.mutation(
+        f'UPDATE MEDICACAO SET REGISTRO_FEDERAL = \'{medicacao.registro_federal}\', NOME = \'{medicacao.nome}\', FABRICANTE = \'{medicacao.fabricante}\', CIRCUNSTANCIA = \'{medicacao.circunstancia}\' WHERE MED_ID = \'{medicacao.med_id}\';')
 
 
 def deleteMedicacao(med_id: int):
+    conn = postgree()
     print(f'delete medicacao from id {med_id}')
-    response = postgree.mutation(f'DELETE FROM MEDICACAO m WHERE m.MED_ID = {med_id};')
+    response = conn.mutation('DELETE FROM MEDICACAO m WHERE m.MED_ID = med_id;')
     return response

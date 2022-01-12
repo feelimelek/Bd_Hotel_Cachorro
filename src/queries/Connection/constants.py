@@ -4,6 +4,6 @@ class constants:
 
     def __init__(self):
         self.HOST = 'localhost'
-        self.database = 'pet'# "??
+        self.database = 'postgres'# "??
         self.user = 'postgres'# ??
         self.password = 'Admin' # ??
